@@ -1,13 +1,13 @@
 import "dotenv/config";
-import express from "express";
-import cors from "cors";
-import { connectDB } from "./database/main";
+import { connectDB } from "./database/main.js";
+import { app } from "./app.js";
 
-// * DB CONNECTION
-connectDB();
-
-// * BASIC APPLICATION
-const app = express();
-
-// * BUILT-IN MIDDLEWARE
-app.use(cors());
+connectDB()
+	.then(() => {
+		app.listen(process.env.PORT || 8000, () => {
+			console.log("Server is running at port ", process.env.PORT);
+		});
+	})
+	.catch((error) => {
+		console.log("MongoDB connection failed!", error.message);
+	});
